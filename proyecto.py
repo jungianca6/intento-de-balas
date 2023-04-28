@@ -111,18 +111,17 @@ def ventana():
                 try:
                         bordelaseralien = canvas.bbox(laseralien)
                         x1, y1, x2, y2 = bordelaseralien
-                        if x2 < -50:
+                        if x2 < -10:
                                 canvas.delete(laseralien)
                                 if laseralienloop:
                                         game.after_cancel(laseralienloop)
                                 remove_bala_alien(id)      
                         else:
                                 canvas.move(laseralien, -10, 0)
-                                laserloopalien = game.after(10, movelaseralien, id, laseralien, laseralienloop)
-                                if len(enemigoslista)>0:
-                                        colisionbala(laseralien,0)
+                                laserloopalien = game.after(10, movelaseralien, id, laseralien, laseralienloop)               
                 except:
                         return
+                
         def remove_bala_alien(id):
                 global balasaliens
                 if balasaliens[0]['id'] == id:
@@ -144,7 +143,7 @@ def ventana():
                                 bordealien = canvas.bbox(alien)
                                 xa1, ya1, xa2, ya2 = bordealien
                                 #posicion de bala
-                                xabala = xa1 + 20
+                                xabala = xa1 - 20
                                 yabala = (ya1 + ya2) / 2
                                 laseralien = canvas.create_image(xabala, yabala, image=newbullet)
                                 id = canvas.create_text(xabala, yabala, text='', fill='white', font=('arial', 1))
@@ -159,22 +158,23 @@ def ventana():
                         except IndexError:
                                 bordealien = canvas.bbox(alien)
                                 xa1, ya1, xa2, ya2 = bordealien
-                                xabala = xa1 + 20
+                                xabala = xa1 - 20
                                 yabala = (ya1 + ya2) / 2
                                 laseralien = canvas.create_image(xabala, yabala, image=newbullet)
                                 id = canvas.create_text(xabala, yabala, text='', fill='white', font=('arial', 1))
-                                laseralienloop = game.after(5, movelaseralien, id, laseralien, None)
+                                laseralienloop = game.after(10, movelaseralien, id, laseralien, None)
                                 balasaliens.append({'id': id, 'laseralien': laseralien, 'laseralienloop': laseralienloop})
-
+                                
                                 pygame.mixer.init()
                                 blastsound=pygame.mixer.Sound('blast shot.wav')
                                 blastsound.play()
                                 blastsound.set_volume(0.3)
 
         def movealiens(canvas,alien):
-                canvas.move(alien, -1, 0)
+                canvas.move(alien, -5, 0)
                 game.after(10,movealiens,canvas,alien)
                 alienshoot(canvas,alien)
+       
                 
         def aliens(canvas,newalien):
                 global enemigoslista,contador_enemigos
@@ -193,9 +193,6 @@ def ventana():
                                 contador_enemigos = 0
                         game.after(800,aliens,canvas,newalien)
         aliens(canvas,newalien)
-
-        
-
 
         
        
